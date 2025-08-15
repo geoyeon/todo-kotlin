@@ -37,4 +37,11 @@ data class Todo (
     @LastModifiedDate
     @get: JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     var updatedAt: LocalDateTime? = null,
-) {}
+) {
+    constructor(title: String, memo: String, startDate: LocalDateTime, endDate: LocalDateTime) : this() {
+        this.title = title
+        this.memo = memo
+        this.startDate = startDate
+        this.endDate = endDate
+    }
+}
