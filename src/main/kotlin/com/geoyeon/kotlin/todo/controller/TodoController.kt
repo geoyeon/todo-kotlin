@@ -5,6 +5,7 @@ import com.geoyeon.kotlin.todo.common.TodoException
 import com.geoyeon.kotlin.todo.common.logger
 import com.geoyeon.kotlin.todo.domain.Todo
 import com.geoyeon.kotlin.todo.dto.TodoCreateRequest
+import com.geoyeon.kotlin.todo.dto.TodoListResponse
 import com.geoyeon.kotlin.todo.dto.TodoUpdateRequest
 import com.geoyeon.kotlin.todo.service.TodoService
 import jakarta.validation.Valid
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -49,5 +51,13 @@ class TodoController(private val todoService: TodoService) {
         this.todoService.updateTodo(id, todoUpdateRequest)
 
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/")
+    fun getTodos(@RequestParam(value = "page", required = false) page: Int = 1, @RequestParam(value = "isComplete", required = false) isComplete: Boolean?, @RequestParam(value = "search", required = false) search: String? ): ResponseEntity<TodoListResponse> {
+        logger.info("Get : List : $page : $isComplete : $search")
+
+        val result: TodoListResponse = this.todoService.getTodos(page, isComplete, search)
+
+        return ResponseEntity.ok().body(result)
     }
 }
